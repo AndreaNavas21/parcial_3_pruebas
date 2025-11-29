@@ -1,14 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Informe de alumnos - TYT</title>
     <style>
+        :root {
+            --color-bg: #020617;
+            --color-card: rgba(15, 23, 42, 0.96);
+            --color-border: rgba(148, 163, 184, 0.35);
+            --color-accent: #22c55e;
+            --color-accent-soft: rgba(34, 197, 94, 0.18);
+            --color-text: #e5e7eb;
+            --color-text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-            background-color: #f3f5fb;
             margin: 0;
-            padding: 20px;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at top left, #22c55e22, transparent 55%),
+                    radial-gradient(circle at bottom right, #0ea5e922, transparent 55%),
+                    var(--color-bg);
+            color: var(--color-text);
+            padding: 24px;
         }
 
         .shell {
@@ -23,32 +42,85 @@
             margin-bottom: 18px;
         }
 
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+        }
+
         .title {
             font-size: 22px;
-            font-weight: 600;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+        }
+
+        .title span {
+            color: var(--color-accent);
         }
 
         .subtitle {
-            font-size: 13px;
-            color: #6b7280;
+            font-size: 12px;
+            color: var(--color-text-muted);
         }
 
         .btn-secondary {
-            padding: 8px 14px;
+            padding: 7px 14px;
             border-radius: 999px;
-            border: none;
-            background: #e5e7eb;
-            color: #111827;
-            font-size: 13px;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--color-text);
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary span {
+            font-size: 13px;
         }
 
         .card {
-            background: #ffffff;
-            border-radius: 16px;
+            background: var(--color-card);
+            border-radius: 18px;
             padding: 18px 20px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+            border: 1px solid var(--color-border);
+            box-shadow:
+                    0 18px 45px rgba(15, 23, 42, 0.9),
+                    0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+
+        .empty-msg {
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        .table-wrapper {
+            margin-top: 6px;
+            overflow-x: auto;
         }
 
         table {
@@ -59,7 +131,7 @@
 
         th, td {
             padding: 6px 4px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.9);
             text-align: center;
         }
 
@@ -67,16 +139,46 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: .05em;
-            color: #6b7280;
+            color: var(--color-text-muted);
+        }
+
+        tbody tr:hover {
+            background: rgba(15, 23, 42, 0.85);
         }
 
         .row-header {
             text-align: left;
         }
 
-        .empty-msg {
-            font-size: 13px;
-            color: #6b7280;
+        .cell-doc {
+            text-align: left;
+        }
+
+        .chip-level {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--color-text-muted);
+        }
+
+        .cell-promedio {
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 16px;
+            }
+            .title {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -84,14 +186,23 @@
 <div class="shell">
 
     <div class="header">
-        <div>
-            <div class="title">Informe de alumnos</div>
+        <div class="header-left">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                <span>Coordinador · Informe de alumnos</span>
+            </div>
+            <div class="title">
+                Informe de <span>alumnos</span>
+            </div>
             <div class="subtitle">
                 Visualiza los puntajes por materia, el nivel alcanzado y el promedio global de cada estudiante.
             </div>
         </div>
         <a th:href="@{/coordinador/dashboard}" style="text-decoration:none;">
-            <button class="btn-secondary" type="button">Volver al panel</button>
+            <button class="btn-secondary" type="button">
+                <span>⟵</span>
+                <span>Volver al panel</span>
+            </button>
         </a>
     </div>
 
@@ -100,7 +211,7 @@
             No hay alumnos registrados. Primero debes crear alumnos desde la opción "Gestión de alumnos".
         </div>
 
-        <div th:if="${!#lists.isEmpty(alumnos)}" style="overflow-x:auto;">
+        <div th:if="${!#lists.isEmpty(alumnos)}" class="table-wrapper">
             <table>
                 <thead>
                 <tr>
@@ -138,44 +249,62 @@
                 <tbody>
                 <tr th:each="al : ${alumnos}">
                     <!-- Datos básicos -->
-                    <td class="row-header" th:text="${al.numeroDocumento}">123</td>
+                    <td class="cell-doc" th:text="${al.numeroDocumento}">123</td>
                     <td class="row-header" th:text="${al.nombresApellidos}">Nombre Apellido</td>
                     <td th:text="${al.numeroRegistro}">REG-001</td>
 
                     <!-- Comunicación escrita -->
                     <td th:text="${al.comunicacionEscrita}">0</td>
-                    <td th:text="${al.nivelComunicacionEscrita}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelComunicacionEscrita}">Nivel 1</span>
+                    </td>
 
                     <!-- Razonamiento cuantitativo -->
                     <td th:text="${al.razonamientoCuantitativo}">0</td>
-                    <td th:text="${al.nivelRazonamientoCuantitativo}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelRazonamientoCuantitativo}">Nivel 1</span>
+                    </td>
 
                     <!-- Lectura crítica -->
                     <td th:text="${al.lecturaCritica}">0</td>
-                    <td th:text="${al.nivelLecturaCritica}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelLecturaCritica}">Nivel 1</span>
+                    </td>
 
                     <!-- Competencias ciudadanas -->
                     <td th:text="${al.competenciasCiudadanas}">0</td>
-                    <td th:text="${al.nivelCompetenciasCiudadanas}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelCompetenciasCiudadanas}">Nivel 1</span>
+                    </td>
 
                     <!-- Inglés -->
                     <td th:text="${al.ingles}">0</td>
-                    <td th:text="${al.nivelIngles}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelIngles}">Nivel 1</span>
+                    </td>
 
                     <!-- Formulación proyectos ingeniería -->
                     <td th:text="${al.formulacionProyectosIngenieria}">0</td>
-                    <td th:text="${al.nivelFormulacionProyectosIngenieria}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelFormulacionProyectosIngenieria}">Nivel 1</span>
+                    </td>
 
                     <!-- Pensamiento científico-matemático y estadística -->
                     <td th:text="${al.pensamientoCientificoMatematicoEstadistica}">0</td>
-                    <td th:text="${al.nivelPensamientoCientificoMatematicoEstadistica}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelPensamientoCientificoMatematicoEstadistica}">
+                            Nivel 1
+                        </span>
+                    </td>
 
                     <!-- Diseño de software -->
                     <td th:text="${al.disenoSoftware}">0</td>
-                    <td th:text="${al.nivelDisenoSoftware}">Nivel 1</td>
+                    <td>
+                        <span class="chip-level" th:text="${al.nivelDisenoSoftware}">Nivel 1</span>
+                    </td>
 
                     <!-- Promedio global -->
-                    <td th:text="${al.promedioGlobal}">0.0</td>
+                    <td class="cell-promedio" th:text="${al.promedioGlobal}">0.0</td>
                 </tr>
                 </tbody>
             </table>

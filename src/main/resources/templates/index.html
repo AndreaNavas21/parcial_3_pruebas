@@ -1,362 +1,438 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema Resultados </title>
+    <title>Sistema de Resultados TYT</title>
     <style>
         :root {
-            --bg-page: #f3f5fb;
-            --card-bg: #ffffff;
-            --accent: #234e9b;
-            --accent-soft: #e1e8ff;
-            --text-main: #1f2933;
-            --text-muted: #6b7280;
-            --border-soft: #d1d5db;
-            --success: #10b981;
+            --color-bg: #020617;
+            --color-card: #0b1120;
+            --color-card-soft: #020617;
+            --color-border: rgba(148, 163, 184, 0.3);
+            --color-accent: #22c55e;
+            --color-accent-soft: rgba(34, 197, 94, 0.18);
+            --color-text: #e5e7eb;
+            --color-text-muted: #9ca3af;
+            --color-error: #f97373;
         }
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, #dde7ff 0, #f3f5fb 55%);
+            margin: 0;
             min-height: 100vh;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at top left, #22c55e22, transparent 55%),
+                    radial-gradient(circle at bottom right, #0ea5e922, transparent 55%),
+                    var(--color-bg);
+            color: var(--color-text);
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
-            padding: 20px;
-            color: var(--text-main);
+            padding: 24px;
         }
 
         .shell {
             width: 100%;
-            max-width: 900px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            color: var(--accent);
-        }
-
-        .brand-logo {
-            width: 32px;
-            height: 32px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent), #4f46e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .brand-text {
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            font-size: 15px;
-            text-transform: uppercase;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            max-width: 1120px;
             display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 16px;
+            }
+            .shell {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .panel-info {
+            padding: 24px 20px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #020617ee, #020617dd);
+            border: 1px solid var(--color-border);
+            position: relative;
             overflow: hidden;
         }
 
-        /* Lado izquierdo (info) */
-        .card-left {
-            padding: 28px 30px;
-            border-right: 1px solid var(--border-soft);
-            background: radial-gradient(circle at top left, #eef2ff 0, #ffffff 60%);
+        .panel-info::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                    radial-gradient(circle at top left, #22c55e22, transparent 55%),
+                    radial-gradient(circle at bottom right, #0ea5e922, transparent 55%);
+            opacity: 0.6;
+            pointer-events: none;
         }
 
-        .card-left h1 {
-            font-size: 26px;
-            margin-bottom: 6px;
-        }
-
-        .card-left p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 18px;
-        }
-
-        .pill {
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 10px;
+            padding: 4px 10px;
             border-radius: 999px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            font-size: 12px;
-            font-weight: 500;
-            margin-bottom: 14px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 11px;
+            color: var(--color-text-muted);
+            position: relative;
+            z-index: 1;
         }
 
-        .pill-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--success);
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
         }
 
-        .benefits-list {
-            list-style: none;
+        .title {
+            margin-top: 18px;
+            font-size: 28px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title span {
+            color: var(--color-accent);
+        }
+
+        .subtitle {
             margin-top: 8px;
-            color: var(--text-muted);
-            font-size: 13px;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            max-width: 420px;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
         }
 
-        .benefits-list li {
+        .list {
+            margin-top: 18px;
+            display: grid;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .list-item {
+            display: flex;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        .list-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.6);
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 6px;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--color-accent);
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        .benefits-bullet {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            opacity: 0.6;
+        .panel-auth {
+            padding: 24px 22px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid var(--color-border);
+            box-shadow:
+                    0 18px 45px rgba(15, 23, 42, 0.9),
+                    0 0 0 1px rgba(15, 23, 42, 0.9);
         }
 
-        /* Lado derecho (formulario) */
-        .card-right {
-            padding: 28px 30px 26px;
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
         }
 
-        .card-right h2 {
+        .auth-title {
             font-size: 18px;
+            font-weight: 600;
+        }
+
+        .auth-subtitle {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .role-toggle {
+            display: inline-flex;
+            padding: 4px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            gap: 4px;
             margin-bottom: 12px;
         }
 
-        .helper-text {
+        .role-btn {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--color-text-muted);
             font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.18s ease-out;
         }
-		
-		.error-box {
-		    margin-bottom: 10px;
-		    padding: 8px 10px;
-		    border-radius: 8px;
-		    background-color: #fee2e2;
-		    border: 1px solid #fecaca;
-		    color: #b91c1c;
-		    font-size: 12px;
-		}
 
-
-        label {
-            display: block;
+        .role-btn span.icon {
             font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #111827;
         }
 
-        select,
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 9px 10px;
-            border-radius: 9px;
-            border: 1px solid var(--border-soft);
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
-            background-color: #f9fafb;
-        }
-
-        select:hover,
-        input[type="text"]:hover,
-        input[type="password"]:hover {
-            background-color: #f3f4f6;
-        }
-
-        select:focus,
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-            background-color: #ffffff;
+        .role-btn.active {
+            background: var(--color-accent-soft);
+            color: var(--color-text);
         }
 
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        .btn {
-            margin-top: 10px;
+        label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: var(--color-text-muted);
+        }
+
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
-            padding: 10px;
-            border: none;
+            padding: 9px 11px;
+            border-radius: 10px;
+            border: 1px solid rgba(148, 163, 184, 0.55);
+            background: rgba(15, 23, 42, 0.95);
+            color: var(--color-text);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.45);
+            background: rgba(15, 23, 42, 1);
+        }
+
+        .helper-text {
+            font-size: 11px;
+            color: var(--color-text-muted);
+        }
+
+        .error-box {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.6);
+            font-size: 12px;
+            color: var(--color-error);
+        }
+
+        .btn-primary {
+            width: 100%;
+            margin-top: 6px;
+            padding: 9px 12px;
             border-radius: 999px;
-            background: linear-gradient(135deg, var(--accent), #4f46e5);
-            color: #ffffff;
-            font-size: 14px;
+            border: none;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.02em;
-            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.28);
-            transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #0b1120;
+            box-shadow: 0 12px 25px rgba(22, 163, 74, 0.45);
+            transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.08s ease-out;
         }
 
-        .btn:hover {
-            filter: brightness(1.04);
+        .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(79, 70, 229, 0.33);
+            filter: brightness(1.05);
+            box-shadow: 0 16px 30px rgba(22, 163, 74, 0.55);
         }
 
-        .btn:active {
-            transform: translateY(0px) scale(0.99);
-            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.3);
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 18px rgba(22, 163, 74, 0.45);
         }
 
-        .footnote {
-            margin-top: 10px;
+        .footer-text {
+            margin-top: 14px;
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--color-text-muted);
             text-align: center;
-        }
-
-        @media (max-width: 780px) {
-            .card {
-                grid-template-columns: 1fr;
-            }
-
-            .card-left {
-                border-right: none;
-                border-bottom: 1px solid var(--border-soft);
-            }
         }
     </style>
 </head>
 <body>
 <div class="shell">
-    <!-- Encabezado pequeño tipo institucional -->
-    <div class="brand">
-        <div class="brand-logo">SR</div>
-        <div class="brand-text">Sistema de Resultados</div>
-    </div>
 
-    <div class="card">
-        <!-- Lado informativo -->
-        <div class="card-left">
-            <div class="pill">
-                <span class="pill-dot"></span>
-                Plataforma académica
+    <!-- Panel informativo -->
+    <section class="panel-info">
+        <div class="badge">
+            <span class="badge-dot"></span>
+            <span>Sistema de Resultados TYT</span>
+        </div>
+
+        <h1 class="title">
+            Consulta y gestión de <span>resultados TYT</span>
+        </h1>
+
+        <p class="subtitle">
+            Plataforma académica para administrar coordinadores, registrar alumnos y visualizar el
+            detalle de sus puntajes, niveles, estado de graduación y beneficios obtenidos.
+        </p>
+
+        <div class="list">
+            <div class="list-item">
+                <div class="list-icon">A</div>
+                <div>
+                    <strong>Administrador</strong><br>
+                    Gestiona los usuarios coordinadores que acceden al sistema.
+                </div>
             </div>
-            <h1>Consulta y gestión de resultados</h1>
-            <p>
-                Esta plataforma permite al <strong>administrador</strong> y al
-                <strong>coordinador</strong> gestionar los resultados de las pruebas,
-                y a los <strong>estudiantes</strong> consultar su desempeño y verificar
-                si aplican a beneficios.
-            </p>
+            <div class="list-item">
+                <div class="list-icon">C</div>
+                <div>
+                    <strong>Coordinador</strong><br>
+                    Registra alumnos, puntajes por competencia y consulta informes consolidados.
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="list-icon">E</div>
+                <div>
+                    <strong>Estudiante</strong><br>
+                    Consulta detalladamente sus resultados y beneficios usando su número de documento.
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <ul class="benefits-list">
-                <li>
-                    <span class="benefits-bullet"></span>
-                    Registro y administración de estudiantes.
-                </li>
-                <li>
-                    <span class="benefits-bullet"></span>
-                    Carga y visualización de resultados detallados.
-                </li>
-                <li>
-                    <span class="benefits-bullet"></span>
-                    Consulta rápida por número de identificación.
-                </li>
-            </ul>
+    <!-- Panel de autenticación -->
+    <section class="panel-auth">
+        <div class="auth-header">
+            <div>
+                <div class="auth-title">Ingresar al sistema</div>
+                <div class="auth-subtitle">Selecciona tu rol e ingresa tus credenciales</div>
+            </div>
         </div>
 
-        <!-- Lado formulario -->
-        <div class="card-right">
-            <h2>Ingreso al sistema</h2>
-            <p class="helper-text">
-                Selecciona tu tipo de usuario. Si eres <strong>Alumno</strong>, ingresa
-                únicamente tu número de identificación.
-            </p>
-			
-			<div th:if="${error != null}" class="error-box">
-			    <span th:text="${error}"></span>
-			</div>
+        <!-- Toggle de rol -->
+        <div class="role-toggle" id="roleToggle">
+            <button type="button" class="role-btn active" data-role="ADMIN">
+                <span class="icon">👤</span>
+                <span>Administrador</span>
+            </button>
+            <button type="button" class="role-btn" data-role="COORDINADOR">
+                <span class="icon">📊</span>
+                <span>Coordinador</span>
+            </button>
+            <button type="button" class="role-btn" data-role="ALUMNO">
+                <span class="icon">🎓</span>
+                <span>Alumno</span>
+            </button>
+        </div>
 
-            <form th:action="@{/login}" method="post">
-                <!-- Tipo de usuario -->
+        <form th:action="@{/login}" method="post" autocomplete="off">
+            <!-- Campo oculto con el tipo de usuario -->
+            <input type="hidden" id="tipoUsuario" name="tipoUsuario" value="ADMIN"/>
+
+            <!-- Bloque Admin / Coordinador -->
+            <div id="adminCoordFields">
                 <div class="form-group">
-                    <label for="tipoUsuario">Tipo de usuario</label>
-                    <select id="tipoUsuario" name="tipoUsuario" onchange="cambiarFormulario()" required>
-                        <option value="" selected disabled>Selecciona una opción</option>
-                        <option value="ADMIN">Administrador</option>
-                        <option value="COORDINADOR">Coordinador</option>
-                        <option value="ALUMNO">Alumno</option>
-                    </select>
+                    <label for="usuario">Usuario</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Ingresa tu usuario">
                 </div>
 
-                <!-- ADMIN / COORDINADOR -->
-                <div id="camposAdminCoord" style="display:none;">
-                    <div class="form-group">
-                        <label for="usuario">Usuario</label>
-                        <input type="text" id="usuario" name="usuario"
-                               placeholder="Ej: admin01">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contrasena">Contraseña</label>
-                        <input type="password" id="contrasena" name="contrasena"
-                               placeholder="Ingresa tu contraseña">
-                    </div>
+                <div class="form-group">
+                    <label for="contrasena">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" placeholder="Ingresa tu contraseña">
                 </div>
 
-                <!-- ALUMNO -->
-                <div id="camposAlumno" style="display:none;">
-                    <div class="form-group">
-                        <label for="identificacion">Número de identificación</label>
-                        <input type="text" id="identificacion" name="identificacion"
-                               placeholder="Documento del estudiante">
-                    </div>
+                <div class="helper-text">
+                    Usa las credenciales asignadas por el administrador del sistema.
                 </div>
+            </div>
 
-                <button type="submit" class="btn">Ingresar</button>
+            <!-- Bloque Alumno -->
+            <div id="alumnoFields" style="display: none;">
+                <div class="form-group">
+                    <label for="identificacion">Número de identificación</label>
+                    <input type="text" id="identificacion" name="identificacion"
+                           placeholder="Ingresa tu número de documento">
+                </div>
+                <div class="helper-text">
+                    Debe coincidir con el número registrado por tu coordinador en el sistema.
+                </div>
+            </div>
 
-            </form>
-        </div>
-    </div>
+            <!-- Mensaje de error desde el backend -->
+            <div th:if="${error}" class="error-box" th:text="${error}">
+                Mensaje de error
+            </div>
+
+            <button type="submit" class="btn-primary">
+                Ingresar
+            </button>
+
+            <div class="footer-text">
+                Proyecto académico desarrollado con Spring Boot, Thymeleaf y PostgreSQL.
+            </div>
+        </form>
+    </section>
 </div>
 
 <script>
-    function cambiarFormulario() {
-        const tipo = document.getElementById("tipoUsuario").value;
-        const divAdminCoord = document.getElementById("camposAdminCoord");
-        const divAlumno = document.getElementById("camposAlumno");
+    (function () {
+        const roleButtons = document.querySelectorAll('.role-btn');
+        const tipoUsuarioInput = document.getElementById('tipoUsuario');
+        const adminCoordFields = document.getElementById('adminCoordFields');
+        const alumnoFields = document.getElementById('alumnoFields');
 
-        if (tipo === "ADMIN" || tipo === "COORDINADOR") {
-            divAdminCoord.style.display = "block";
-            divAlumno.style.display = "none";
-        } else if (tipo === "ALUMNO") {
-            divAdminCoord.style.display = "none";
-            divAlumno.style.display = "block";
-        } else {
-            divAdminCoord.style.display = "none";
-            divAlumno.style.display = "none";
-        }
-    }
+        roleButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Quitar estado activo de todos
+                roleButtons.forEach(b => b.classList.remove('active'));
+                // Activar el seleccionado
+                btn.classList.add('active');
+
+                const role = btn.getAttribute('data-role');
+                tipoUsuarioInput.value = role;
+
+                if (role === 'ALUMNO') {
+                    adminCoordFields.style.display = 'none';
+                    alumnoFields.style.display = 'block';
+                } else {
+                    adminCoordFields.style.display = 'block';
+                    alumnoFields.style.display = 'none';
+                }
+            });
+        });
+    })();
 </script>
 </body>
 </html>

@@ -1,115 +1,212 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Panel Coordinador - TYT</title>
     <style>
+        :root {
+            --color-bg: #020617;
+            --color-card: rgba(15, 23, 42, 0.96);
+            --color-border: rgba(148, 163, 184, 0.35);
+            --color-accent: #22c55e;
+            --color-accent-soft: rgba(34, 197, 94, 0.18);
+            --color-text: #e5e7eb;
+            --color-text-muted: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-            background-color: #f3f5fb;
             margin: 0;
-            padding: 20px;
+            min-height: 100vh;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background:
+                    radial-gradient(circle at top left, #22c55e22, transparent 55%),
+                    radial-gradient(circle at bottom right, #0ea5e922, transparent 55%),
+                    var(--color-bg);
+            color: var(--color-text);
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 24px;
         }
 
         .card {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 24px 28px;
-            max-width: 820px;
+            background: var(--color-card);
+            border-radius: 22px;
+            padding: 22px 24px 18px;
+            max-width: 880px;
             width: 100%;
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            border: 1px solid var(--color-border);
+            box-shadow:
+                    0 20px 50px rgba(15, 23, 42, 0.9),
+                    0 0 0 1px rgba(15, 23, 42, 0.9);
         }
 
-        .tag {
-            display: inline-block;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             padding: 4px 10px;
             border-radius: 999px;
-            background: #dcfce7;
-            color: #15803d;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.5);
             font-size: 11px;
-            font-weight: 600;
+            color: var(--color-text-muted);
             text-transform: uppercase;
-            letter-spacing: .06em;
+            letter-spacing: .08em;
             margin-bottom: 10px;
         }
 
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+        }
+
         h1 {
-            margin: 0 0 6px;
+            margin: 0 0 4px;
             font-size: 22px;
+            font-weight: 650;
+            letter-spacing: 0.01em;
+        }
+
+        h1 span {
+            color: var(--color-accent);
         }
 
         p {
-            margin: 0 0 14px;
-            color: #6b7280;
-            font-size: 14px;
+            margin: 0;
+            color: var(--color-text-muted);
+            font-size: 13px;
         }
 
         .options {
-            margin-top: 14px;
+            margin-top: 18px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
+            gap: 14px;
         }
 
         .option-card {
-            background: #f9fafb;
-            border-radius: 14px;
+            background: rgba(15, 23, 42, 0.85);
+            border-radius: 16px;
             padding: 12px 14px 14px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid rgba(31, 41, 55, 0.9);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(148, 163, 184, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
 
         .option-card h2 {
             font-size: 15px;
-            margin: 0 0 4px;
+            margin: 0;
         }
 
         .option-card p {
             font-size: 12px;
-            margin-bottom: 10px;
+            margin: 0 0 8px;
         }
 
         .btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             padding: 7px 12px;
             border-radius: 999px;
             border: none;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn span.icon {
+            font-size: 14px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg,#047857,#16a34a);
-            color: #ffffff;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #0b1120;
+            box-shadow: 0 10px 22px rgba(22, 163, 74, 0.45);
+            width: fit-content;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
         }
 
         .btn-outline {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            color: #111827;
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            color: var(--color-text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
         }
 
         .footer {
-            margin-top: 12px;
-            text-align: right;
+            margin-top: 16px;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .footer a {
             font-size: 12px;
-            color: #2563eb;
+            color: var(--color-text-muted);
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        .footer a:hover {
+            color: var(--color-accent);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+            .card {
+                padding: 18px 18px 14px;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="card">
-    <div class="tag">Coordinador</div>
-    <h1>Panel del coordinador</h1>
+    <div class="badge">
+        <span class="badge-dot"></span>
+        <span>Panel del coordinador</span>
+    </div>
+    <h1>Gestión académica de <span>resultados TYT</span></h1>
     <p>
         Desde este panel puedes administrar los estudiantes y sus resultados de las pruebas TYT,
         así como consultar informes académicos y beneficios.
@@ -118,34 +215,55 @@
     <div class="options">
         <!-- Opción 1: CRUD de alumnos -->
         <div class="option-card">
-            <h2>CRUD de alumnos</h2>
+            <div class="option-header">
+                <div class="option-icon">📋</div>
+                <h2>CRUD de alumnos</h2>
+            </div>
             <p>Registrar, actualizar o eliminar alumnos y sus puntajes por competencia.</p>
             <a th:href="@{/coordinador/alumnos}">
-                <button type="button" class="btn btn-primary">Gestionar alumnos</button>
+                <button type="button" class="btn btn-primary">
+                    <span class="icon">➜</span>
+                    <span>Gestionar alumnos</span>
+                </button>
             </a>
         </div>
 
-        <!-- Opción 2: Informe de alumnos (estructura, sin lógica todavía) -->
+        <!-- Opción 2: Informe de alumnos -->
         <div class="option-card">
-            <h2>Informe de alumnos</h2>
+            <div class="option-header">
+                <div class="option-icon">📊</div>
+                <h2>Informe de alumnos</h2>
+            </div>
             <p>Visualizar todos los alumnos, sus puntajes y su promedio global.</p>
             <a th:href="@{/coordinador/informe-alumnos}">
-                <button type="button" class="btn btn-outline">Ver informe</button>
+                <button type="button" class="btn btn-outline">
+                    <span class="icon">👁</span>
+                    <span>Ver informe</span>
+                </button>
             </a>
         </div>
 
-        <!-- Opción 3: Informe de beneficios (estructura, sin lógica todavía) -->
+        <!-- Opción 3: Informe de beneficios -->
         <div class="option-card">
-            <h2>Informe de beneficios</h2>
+            <div class="option-header">
+                <div class="option-icon">🎓</div>
+                <h2>Informe de beneficios</h2>
+            </div>
             <p>Consultar si el estudiante puede graduarse y los beneficios obtenidos.</p>
             <a th:href="@{/coordinador/informe-beneficios}">
-                <button type="button" class="btn btn-outline">Ver beneficios</button>
+                <button type="button" class="btn btn-outline">
+                    <span class="icon">⭐</span>
+                    <span>Ver beneficios</span>
+                </button>
             </a>
         </div>
     </div>
 
     <div class="footer">
-        <a th:href="@{/}">Cerrar sesión</a>
+        <a th:href="@{/}">
+            <span>⟵</span>
+            <span>Cerrar sesión</span>
+        </a>
     </div>
 </div>
 </body>
