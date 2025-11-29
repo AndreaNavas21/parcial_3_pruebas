@@ -1,0 +1,9 @@
+com\parcial_3\app\repository\AlumnoRepository.class
+com\parcial_3\app\Parcial3Application.class
+com\parcial_3\app\repository\UsuarioRepository.class
+com\parcial_3\app\model\Alumno.class
+com\parcial_3\app\model\Usuario.class
+com\parcial_3\app\config\DataInitializer.class
+com\parcial_3\app\controller\CoordinadorController.class
+com\parcial_3\app\controller\AdminController.class
+com\parcial_3\app\controller\HomeController.class
